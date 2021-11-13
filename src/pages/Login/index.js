@@ -2,7 +2,16 @@ import React from 'react';
 import { View, Text, TouchableOpacity, TextInput } from "react-native";
 import styles from "./styles";
 
-export default function Login() {
+export default function Login({ navigation }) {
+
+    function cadastrar() {
+        navigation.navigate("Cadastro");
+    }
+
+    function logar() {
+
+    }
+
     return (
         <View style={styles.background}>
             <View style={styles.backgroundLogin}>
@@ -15,7 +24,7 @@ export default function Login() {
                     <TextInput placeholder="*********" style={styles.senhaInput}/>
                 </View>
                 <View>
-                    <TouchableOpacity style={styles.logar}>
+                    <TouchableOpacity style={styles.logar} onPress={() => {logar()}}>
                         <Text style={styles.logarText}>LOGAR</Text>
                     </TouchableOpacity>
                 </View>
@@ -23,7 +32,7 @@ export default function Login() {
                     <Text>
                         Ainda não possui conta ?
                     </Text>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => {cadastrar()}}>
                         <Text style={{color: '#623033'}}>Faça seu cadastro</Text>
                     </TouchableOpacity>
                 </View>

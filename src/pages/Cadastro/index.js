@@ -2,7 +2,12 @@ import React from 'react';
 import { View, Text, TouchableOpacity, TextInput, ScrollView } from "react-native";
 import styles from "./styles";
 
-export default function Cadastro() {
+export default function Cadastro({ navigation }) {
+
+    function cadastrar() {
+        navigation.navigate("Login");
+    }
+
     return (
         <View>
             <ScrollView contentInsetAdjustmentBehavior="automatic">
@@ -66,7 +71,7 @@ export default function Cadastro() {
                             </View>
                         </View>
                         <View>
-                            <TouchableOpacity style={styles.cadastro}>
+                            <TouchableOpacity style={styles.cadastro} onPress={() => {cadastrar()}}>
                                 <Text style={{color: 'white', fontSize: 20}}>CADASTRAR</Text>
                             </TouchableOpacity>
                         </View>
