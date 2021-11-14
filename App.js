@@ -14,7 +14,9 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import Login from "./src/pages/Login";
 import Cadastro from "./src/pages/Cadastro";
-import Home from "./src/pages/Home"
+import Home from "./src/pages/Home";
+import AlterarSenha from "./src/pages/AlterarSenha";
+import AlterarEndereco from "./src/pages/AlterarEndereco";
 
 const Stack = createStackNavigator();
 
@@ -35,6 +37,14 @@ const App = () => {
           name="Home"
           component={Home}
           options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Alterar senha"
+          component={AlterarSenha}
+        />
+        <Stack.Screen
+          name="Alterar endereço"
+          component={AlterarEndereco}
         />
       </Stack.Navigator>
     </NavigationContainer>
