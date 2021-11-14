@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Button, Text }from "react";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
@@ -41,17 +41,14 @@ export default function Home() {
             <Tab.Screen 
                 name="Feed"
                 component={Feed}
-                options={{ headerShown: false }}
             />
             <Tab.Screen
                 name="Conta"
                 component={Conta}
-                options={{ headerShown: false }}
             />
             <Tab.Screen
                 name="Carrinho"
                 component={Carrinho}
-                options={{ headerShown: false }}
             />
         </Tab.Navigator>
     );
