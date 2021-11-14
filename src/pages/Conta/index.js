@@ -1,8 +1,21 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+
+import { AuthContext } from "../../Context/AuthContext";
+
+import api from "../../api";
 
 export default function Conta({ navigation }) {
     
+    const [nome, setNome] = useState("");
+    const [rua, setRua] = useState("");
+    const [numero, setNumero] = useState("");
+    const [bairro, setBairro] = useState("");
+    const [cidade, setCidade] = useState("");
+    const [email, setEmail] = useState("");
+    const [telefone, setTelefone] = useState("");
+    const { token, setToken } = useContext(AuthContext);
+
     const styles = StyleSheet.create({
         backgroundUser: {
             height: '100%',
@@ -19,17 +32,42 @@ export default function Conta({ navigation }) {
             paddingVertical: 10,
             borderRadius: 10,
         },
-
-
     });
+
+    function carregaDados() {
+        const auth = `Bearer ${token}`;
+
+        api.get("/user", {
+            headers: {
+                'Authorization': auth
+            }
+        })
+        .then((response) => {
+            const { user } = response.data;
+            const { endereco } = response.data
+
+            setNome(user.nome);
+            setEmail(user.email);
+            setTelefone(user.telefone);
+            setRua(endereco.rua);
+            setNumero(endereco.numero);
+            setBairro(endereco.bairro);
+            setCidade(endereco.cidade);
+        })
+        .catch((error) => {
+            console.log(error.response.data);
+        })
+    }
+
+    carregaDados();
     
     return (
         <View style={styles.backgroundUser}>
-            <Text style={{fontSize: 20}}>USER: JOÃO VICTOR</Text>
+            <Text style={{fontSize: 20}}>USER: {nome}</Text>
             <View style={styles.endereco}>
-                <Text>rua, nº - bairro, cidade</Text>
-                <Text>example@gmail.com</Text>
-                <Text>telefone: 99999999999</Text>
+                <Text>{rua}, {numero} - {bairro}, {cidade}</Text>
+                <Text>{email}</Text>
+                <Text>telefone: {telefone}</Text>
             </View>
             <View style={{marginTop: 50}}>
                 <TouchableOpacity style={styles.buttons} onPress={() => {navigation.navigate("Alterar senha")}}>
@@ -42,7 +80,7 @@ export default function Conta({ navigation }) {
                 </TouchableOpacity>
             </View>
             <View style={{marginTop: 10}}>
-                <TouchableOpacity style={styles.buttons} onPress={() => {navigation.navigate("Login")}}>
+                <TouchableOpacity style={styles.buttons} onPress={() => {navigation.navigate("Login"); setToken("")}}>
                     <Text style={{color: 'white', textAlign: 'center', fontSize: 15}}>SAIR</Text>
                 </TouchableOpacity>
             </View>

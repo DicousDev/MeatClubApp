@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, {  useContext, useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput } from "react-native";
 import styles from "./styles";
+
+import { AuthContext } from "../../Context/AuthContext";
 
 import Alert from "../../errors/alert";
 
@@ -11,6 +13,7 @@ export default function Login({ navigation }) {
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
     const [erro, setErro] = useState("");
+    const { setToken } = useContext(AuthContext);
 
     function cadastrar() {
         limparInputs();
@@ -33,6 +36,7 @@ export default function Login({ navigation }) {
         api.post("/auth/login", data)
         .then((response) => {
             console.log(response.data.message);
+            setToken(response.data.token);
             limparInputs();
             navigation.navigate("Home");
         })
