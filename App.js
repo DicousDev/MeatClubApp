@@ -7,13 +7,14 @@
  */
 
 import React from 'react';
-import { View } from 'react-native';
+// import { View } from 'react-native';
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import Login from "./src/pages/Login";
 import Cadastro from "./src/pages/Cadastro";
+import Home from "./src/pages/Home"
 
 const Stack = createStackNavigator();
 
@@ -24,10 +25,16 @@ const App = () => {
         <Stack.Screen
           name="Login"
           component={Login}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="Cadastro"
           component={Cadastro}
+        />
+        <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>

@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
 
     input: {
         backgroundColor: '#E9E9E9',
+        borderRadius: 5
     },
 
     email: {
@@ -91,12 +92,12 @@ const styles = StyleSheet.create({
     },
 
     cadastro: {
-        backgroundColor: '#676767',
+        backgroundColor: '#A10202',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         paddingVertical: 20,
-        borderRadius: 5
+        borderRadius: 20
     }
 });
 

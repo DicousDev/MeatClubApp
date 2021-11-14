@@ -17,11 +17,12 @@ const styles = StyleSheet.create({
     },
 
     campoEmail: {
-        marginVertical: 20
+        marginVertical: 20,
     },
 
     emailInput: {
-        backgroundColor: '#E9E9E9' 
+        backgroundColor: '#E9E9E9',
+        borderRadius: 5
     },
 
     emailText: {
@@ -34,7 +35,8 @@ const styles = StyleSheet.create({
     },
 
     senhaInput: {
-        backgroundColor: '#E9E9E9'
+        backgroundColor: '#E9E9E9',
+        borderRadius: 5,
     },
 
     senhaText: {
@@ -43,12 +45,12 @@ const styles = StyleSheet.create({
     },
 
     logar: {
-        backgroundColor: '#676767',
+        backgroundColor: '#A10202',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         paddingVertical: 20,
-        borderRadius: 5
+        borderRadius: 20
     },
 
     logarText: {

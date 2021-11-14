@@ -1,6 +1,8 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, TextInput } from "react-native";
+import { View, Text, TouchableOpacity, TextInput, ImageBackground, Image } from "react-native";
 import styles from "./styles";
+
+import AntDesign from "react-native-vector-icons/AntDesign";
 
 export default function Login({ navigation }) {
 
@@ -9,7 +11,7 @@ export default function Login({ navigation }) {
     }
 
     function logar() {
-
+        navigation.navigate("Home");
     }
 
     return (
@@ -21,7 +23,7 @@ export default function Login({ navigation }) {
                 </View>
                 <View style={styles.campoSenha}>
                     <Text style={styles.senhaText}>SENHA</Text>
-                    <TextInput placeholder="*********" style={styles.senhaInput}/>
+                    <TextInput secureTextEntry={true} placeholder="*********" style={styles.senhaInput}/>
                 </View>
                 <View>
                     <TouchableOpacity style={styles.logar} onPress={() => {logar()}}>
