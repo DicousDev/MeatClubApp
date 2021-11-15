@@ -2,19 +2,17 @@ import React, { useState, useContext } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 import { AuthContext } from "../../Context/AuthContext";
+import { EnderecoContext } from "../../Context/EnderecoContext";
 
 import api from "../../api";
 
 export default function Conta({ navigation }) {
     
     const [nome, setNome] = useState("");
-    const [rua, setRua] = useState("");
-    const [numero, setNumero] = useState("");
-    const [bairro, setBairro] = useState("");
-    const [cidade, setCidade] = useState("");
     const [email, setEmail] = useState("");
     const [telefone, setTelefone] = useState("");
     const { token, setToken } = useContext(AuthContext);
+    const { rua, setRua, numero, setNumero, bairro, setBairro, cidade, setCidade } = useContext(EnderecoContext);
 
     const styles = StyleSheet.create({
         backgroundUser: {
@@ -63,7 +61,7 @@ export default function Conta({ navigation }) {
     
     return (
         <View style={styles.backgroundUser}>
-            <Text style={{fontSize: 20}}>USER: {nome}</Text>
+            <Text style={{fontSize: 20}}>User: {nome}</Text>
             <View style={styles.endereco}>
                 <Text>{rua}, {numero} - {bairro}, {cidade}</Text>
                 <Text>{email}</Text>

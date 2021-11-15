@@ -12,6 +12,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import AuthContext from "./src/Context/AuthContext";
+import EnderecoContext from "./src/Context/EnderecoContext";
 
 import Login from "./src/pages/Login";
 import Cadastro from "./src/pages/Cadastro";

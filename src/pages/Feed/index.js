@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
 import Produto from "../Produto/index"
+
+import api from "../../api";
 
 export default function Feed() {
     
@@ -11,23 +13,31 @@ export default function Feed() {
         },
     });
 
+    const [produtos, setProdutos] = useState([]);
+    
+    function carregaProdutos() {
+        api.get("produtos")
+        .then((response) => {
+            setProdutos(response.data);
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+    }
+    
+    useEffect(() => {
+        carregaProdutos();
+    }, []);
+
     return(
         <View style={{marginBottom: 20}}>
             <ScrollView contentInsetAdjustmentBehavior="automatic">
                 <View style={styles.planos}>
-                    <Produto/>
-                    <Produto/>
-                    <Produto/>
-                    <Produto/>
-                    <Produto/>
-                    <Produto/>
-                    <Produto/>
-                    <Produto/>
-                    <Produto/>
-                    <Produto/>
-                    <Produto/>
-                    <Produto/>
-                    <Produto/>
+                    {produtos.map((e, key) => {
+                        return(
+                            <Produto id={e.id} nome={e.nome} conteudo={e.conteudo} preco={e.preco} periodo={e.periodo}/>
+                        );
+                    })}
                 </View>
             </ScrollView>
         </View>

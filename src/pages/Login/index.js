@@ -24,7 +24,7 @@ export default function Login({ navigation }) {
         //Teste
         const data = {
             email: "pijack123@gmail.com",
-            password: "123456789"
+            password: "teste123"
         }
 
         // Original

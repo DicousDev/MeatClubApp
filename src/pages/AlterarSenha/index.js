@@ -1,8 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, TextInput } from "react-native";
+
+import Alert from "../../errors/alert";
+import { AuthContext } from "../../Context/AuthContext";
+import api from "../../api";
 
 export default function AlterarSenha({ navigation }) {
     
+    const [senhaAtual, setSenhaAtual] = useState("");
+    const [senha, setSenha] = useState("");
+    const [confirmarSenha, setConfirmarSenha] = useState("");
+    const [erro, setErro] = useState("");
+    const { token } = useContext(AuthContext);
+
     const styles = StyleSheet.create({
         background: {
             height: '100%',
@@ -32,23 +42,44 @@ export default function AlterarSenha({ navigation }) {
     });
 
     async function salvar() {
-        await navigation.navigate("Conta");
-        setTimeout(() => {alert("Conta atualizada")}, 100);
+        const auth = `Bearer ${token}`;
+
+        const data = {
+            senhaAtual,
+            senha,
+            confirmaSenha: confirmarSenha
+        };
+
+        api.patch('/user', data, {
+            headers: {
+                "Authorization": auth
+            }
+        })
+        .then((response) => {
+            setTimeout(() => {alert(response.data.message)}, 100);
+            navigation.navigate("Conta");
+        })
+        .catch((error) => {
+            setErro(error.response.data.message);
+        })
     }
     
     return (
         <View style={styles.background}>
+            <View style={{marginBottom: 30, width: '100%'}}>
+                <Alert erro={erro}/>
+            </View>
             <View style={{width: '100%'}}>
                 <Text style={styles.textoInput}>SENHA ATUAL</Text>
-                <TextInput style={styles.inputPadrao} placeholder="SENHA ATUAL"></TextInput>
+                <TextInput secureTextEntry={true} style={styles.inputPadrao} placeholder="SENHA ATUAL" value={senhaAtual} onChangeText={setSenhaAtual}></TextInput>
             </View>
             <View style={{width: '100%', marginTop: 20}}>
                 <Text style={styles.textoInput}>SENHA NOVA</Text>
-                <TextInput style={styles.inputPadrao} placeholder="SENHA NOVA"></TextInput>
+                <TextInput secureTextEntry={true} style={styles.inputPadrao} placeholder="SENHA NOVA" value={senha} onChangeText={setSenha}></TextInput>
             </View>
             <View style={{width: '100%', marginTop: 20}}>
                 <Text style={styles.textoInput}>CONFIRMAR SENHA</Text>
-                <TextInput style={styles.inputPadrao} placeholder="CONFIRMAR SENHA"></TextInput>
+                <TextInput secureTextEntry={true} style={styles.inputPadrao} placeholder="CONFIRMAR SENHA" value={confirmarSenha} onChangeText={setConfirmarSenha}></TextInput>
             </View>
 
             <TouchableOpacity style={styles.salvar} onPress={() => {salvar()}}>
