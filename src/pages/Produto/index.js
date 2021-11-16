@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 
 import { AuthContext } from "../../Context/AuthContext";
 import { ProdutoContext } from "../../Context/ProdutosContext";
+import { TotalContext } from "../../Context/TotalProdutosContext";
 
 import api from "../../api";
 
@@ -27,47 +28,84 @@ export default function Produto(props) {
 
     const { token } = useContext(AuthContext);
     const { produtosList, setProdutosList } = useContext(ProdutoContext);
+    const { total, setTotal } = useContext(TotalContext);
 
     const auth = `Bearer ${token}`
 
     function adicionarProduto() {
-        const data = {
-            nome: props.nome,
-            preco: props.preco,
-            periodo: props.periodo,
-            conteudo: props.conteudo
-        }
+        const produtoExiste = produtosList.findIndex(e => Number(e.id) == Number(props.id))
 
-        api.post(`carrinho/${props.id}`, data, {
-            headers: {
-                'Authorization': auth
-            }
-        });
-
-        setProdutosList([
-            ...produtosList,
-            {
+        if(produtoExiste < 0) {
+            const data = {
                 nome: props.nome,
                 preco: props.preco,
                 periodo: props.periodo,
-                conteudo: props.conteudo
+                conteudos: props.conteudo
             }
-        ])
+    
+            api.post(`carrinho/${props.id}`, data, {
+                headers: {
+                    'Authorization': auth
+                }
+            });
+    
+            setProdutosList([
+                ...produtosList,
+                {
+                    id: props.id,
+                    nome: props.nome,
+                    preco: props.preco,
+                    periodo: props.periodo,
+                    conteudos: props.conteudo
+                }
+            ]);
+    
+            setTotal(total + Number(props.preco));
+        }
     }
 
     function removerProduto() {
+        api.delete(`carrinho/${props.id}`, {
+            headers: {
+                'Authorization': auth
+            }
+        })
+        .then((response) => {
+            console.log(response.data);
+        })
+        .catch((error) => {
+            console.log(error);
+        })
 
+        setProdutosList(
+            produtosList.filter((val) => {
+                return val.id != props.id
+            })
+        );
+
+        setTotal(total - Number(props.preco));
     }
 
     return (
         <View style={styles.backgroundPlano}>
             <View style={{flex: 1,}}>
                 <Text style={{fontSize: 20}}>{props.nome}</Text>
-                <View style={styles.conteudoPlano}>
-                    <Text style={{fontSize: 10}}>1/2 kg de Linguiça Toscana</Text>
-                    <Text style={{fontSize: 10}}>1/2 kg de Drumet Molho Mostarda</Text>
-                    <Text style={{fontSize: 10}}>{props.conteudo}</Text>
-                </View>
+                    <View style={styles.conteudoPlano}>
+                        {
+                            props.carrinho ?
+                                props.conteudo.map(e => {
+                                    return (
+                                        <Text style={{fontSize: 10}}>{e.conteudo}</Text>
+                                    )
+                                })
+                            :
+                            props.conteudo.map(e => {
+                                    return (
+                                        <Text style={{fontSize: 10}}>{e.conteudo}</Text>
+                                    );
+                                })
+                        }
+                    </View>
             </View>
             <View style={{alignItems: "center", justifyContent: 'flex-end', flex: 1}}>
                 <Text style={{paddingBottom: 5}}>R$ {props.preco} {props.periodo}</Text>

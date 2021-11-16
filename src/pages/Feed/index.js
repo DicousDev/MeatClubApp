@@ -33,9 +33,9 @@ export default function Feed() {
         <View style={{marginBottom: 20}}>
             <ScrollView contentInsetAdjustmentBehavior="automatic">
                 <View style={styles.planos}>
-                    {produtos.map((e, key) => {
+                    {produtos.map(e => {
                         return(
-                            <Produto id={e.id} nome={e.nome} conteudo={e.conteudo} preco={e.preco} periodo={e.periodo}/>
+                            <Produto id={e.id} nome={e.nome} conteudo={e.conteudos} preco={e.preco} periodo={e.periodo} carrinho={false}/>
                         );
                     })}
                 </View>
