@@ -64,7 +64,7 @@ export default function AlterarEndereco({ navigation }) {
             data.numero = numero;
         }
 
-        api.patch("/endereco", data, {
+        api.patch("/user/endereco", data, {
             headers: {
                 "Authorization": auth
             }

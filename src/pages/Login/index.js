@@ -22,16 +22,16 @@ export default function Login({ navigation }) {
 
     function logar() {
         //Teste
-        const data = {
-            email: "pijack123@gmail.com",
-            password: "teste123"
-        }
+        // const data = {
+        //     email: "joaodicu387@gmail.com",
+        //     password: "teste123"
+        // }
 
         // Original
-        // const data = {
-        //     email,
-        //     password: senha
-        // }
+        const data = {
+            email,
+            password: senha
+        }
 
         api.post("/auth/login", data)
         .then((response) => {
