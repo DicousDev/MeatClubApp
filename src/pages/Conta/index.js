@@ -48,9 +48,9 @@ export default function Conta({ navigation }) {
             setEmail(user.email);
             setTelefone(user.telefone);
             setRua(endereco.rua);
-            setNumero(endereco.numero);
             setBairro(endereco.bairro);
             setCidade(endereco.cidade);
+            setNumero(endereco.numero);
         })
         .catch((error) => {
             console.log(error.response.data);
