@@ -77,19 +77,9 @@ export default function Carrinho({ navigation }) {
             }
         })
         .then((response) => {
-            console.log("JSDFJFSDJFSDJSDFJSFJDJSDF");
-            console.log("JSDFJFSDJFSDJSDFJSFJDJSDF");
-            console.log("JSDFJFSDJFSDJSDFJSFJDJSDF");
-            console.log("JSDFJFSDJFSDJSDFJSFJDJSDF");
-            console.log("JSDFJFSDJFSDJSDFJSFJDJSDF");
             if(response.data) {
                 setProdutosList(response.data);
             }
-
-            produtosList.map(e => {
-                console.log("BUG CHATO DO KARALHO");
-                console.log(e);
-            })
             
             let soma = 0;
             response.data.map(e => {
