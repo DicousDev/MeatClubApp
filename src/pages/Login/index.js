@@ -21,13 +21,6 @@ export default function Login({ navigation }) {
     }
 
     function logar() {
-        //Teste
-        // const data = {
-        //     email: "joaodicu387@gmail.com",
-        //     password: "teste123"
-        // }
-
-        // Original
         const data = {
             email,
             password: senha
@@ -75,7 +68,6 @@ export default function Login({ navigation }) {
                     </Text>
                     <TouchableOpacity onPress={() => {cadastrar()}}>
                         <Text style={{color: '#623033'}}>Faça seu cadastro</Text>
-                        {/* <Text style={{color: 'white', backgroundColor: '#9F3E3E', paddingHorizontal: 20, borderRadius: 5, paddingVertical: 5, alignItems: 'center'}}>Faça seu cadastro</Text> */}
                     </TouchableOpacity>
                 </View>
             </View>

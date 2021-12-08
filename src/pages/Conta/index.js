@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from "react-native";
 
 import { AuthContext } from "../../Context/AuthContext";
 import { EnderecoContext } from "../../Context/EnderecoContext";
@@ -11,6 +11,7 @@ export default function Conta({ navigation }) {
     const [nome, setNome] = useState("");
     const [email, setEmail] = useState("");
     const [telefone, setTelefone] = useState("");
+    const [obteveUsuario, setObteveUsuario] = useState(false);
     const { token, setToken } = useContext(AuthContext);
     const { rua, setRua, numero, setNumero, bairro, setBairro, cidade, setCidade } = useContext(EnderecoContext);
 
@@ -35,6 +36,7 @@ export default function Conta({ navigation }) {
     function carregaDados() {
         const auth = `Bearer ${token}`;
 
+        // Carregando dados do usuário.
         api.get("/user", {
             headers: {
                 'Authorization': auth
@@ -51,6 +53,7 @@ export default function Conta({ navigation }) {
             setBairro(endereco.bairro);
             setCidade(endereco.cidade);
             setNumero(endereco.numero);
+            setObteveUsuario(true);
         })
         .catch((error) => {
             console.log(error.response.data);
@@ -60,28 +63,39 @@ export default function Conta({ navigation }) {
     carregaDados();
     
     return (
-        <View style={styles.backgroundUser}>
-            <Text style={{fontSize: 20}}>User: {nome}</Text>
-            <View style={styles.endereco}>
-                <Text>{rua}, {numero} - {bairro}, {cidade}</Text>
-                <Text>{email}</Text>
-                <Text>telefone: {telefone}</Text>
-            </View>
-            <View style={{marginTop: 50}}>
-                <TouchableOpacity style={styles.buttons} onPress={() => {navigation.navigate("Alterar senha")}}>
-                    <Text style={{color: 'white', textAlign: 'center', fontSize: 15}}>ALTERAR SENHA</Text>
-                </TouchableOpacity>
-            </View>
-            <View style={{marginTop: 10}}>
-                <TouchableOpacity style={styles.buttons} onPress={() => {navigation.navigate("Alterar endereço")}}>
-                    <Text style={{color: 'white', textAlign: 'center', fontSize: 15}}>ALTERAR ENDEREÇO</Text>
-                </TouchableOpacity>
-            </View>
-            <View style={{marginTop: 10}}>
-                <TouchableOpacity style={styles.buttons} onPress={() => {navigation.navigate("Login"); setToken("")}}>
-                    <Text style={{color: 'white', textAlign: 'center', fontSize: 15}}>SAIR</Text>
-                </TouchableOpacity>
-            </View>
+        <View>
+            {
+                // Enquanto estar carregando os dados do usuário, é feito um loading.
+                (obteveUsuario == true) ?
+                    // Carrega os dados do usuário.
+                    <View style={styles.backgroundUser}>
+                        <Text style={{fontSize: 20}}>User: {nome}</Text>
+                        <View style={styles.endereco}>
+                            <Text>{rua}, {numero} - {bairro}, {cidade}</Text>
+                            <Text>{email}</Text>
+                            <Text>telefone: {telefone}</Text>
+                        </View>
+                        <View style={{marginTop: 50}}>
+                            <TouchableOpacity style={styles.buttons} onPress={() => {navigation.navigate("Alterar senha")}}>
+                                <Text style={{color: 'white', textAlign: 'center', fontSize: 15}}>ALTERAR SENHA</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={{marginTop: 10}}>
+                            <TouchableOpacity style={styles.buttons} onPress={() => {navigation.navigate("Alterar endereço")}}>
+                                <Text style={{color: 'white', textAlign: 'center', fontSize: 15}}>ALTERAR ENDEREÇO</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={{marginTop: 10}}>
+                            <TouchableOpacity style={styles.buttons} onPress={() => {navigation.navigate("Login"); setToken("")}}>
+                                <Text style={{color: 'white', textAlign: 'center', fontSize: 15}}>SAIR</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                :
+                    <View style={{width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center'}}>
+                        <ActivityIndicator size="large" color="#9F3E3E"/>
+                    </View>
+            }
         </View>
     );
 }

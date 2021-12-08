@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, TextInput } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, TextInput, Alert } from "react-native";
 
-import Alert from "../../errors/alert";
+import ErroAlert from "../../errors/alert";
 import { AuthContext } from "../../Context/AuthContext";
 import api from "../../api";
 
@@ -50,13 +50,17 @@ export default function AlterarSenha({ navigation }) {
             confirmaSenha: confirmarSenha
         };
 
+        // Atualiza nova senha do usuário.
         api.patch('/user', data, {
             headers: {
                 "Authorization": auth
             }
         })
         .then((response) => {
-            setTimeout(() => {alert(response.data.message)}, 100);
+            setTimeout(() => {
+                Alert.alert("Conta Atualizada", "Conta atualizada com sucesso!", [
+                    { text: "OK" }])
+            }, 100);
             navigation.navigate("Conta");
         })
         .catch((error) => {
@@ -67,7 +71,7 @@ export default function AlterarSenha({ navigation }) {
     return (
         <View style={styles.background}>
             <View style={{marginBottom: 30, width: '100%'}}>
-                <Alert erro={erro}/>
+                <ErroAlert erro={erro}/>
             </View>
             <View style={{width: '100%'}}>
                 <Text style={styles.textoInput}>SENHA ATUAL</Text>

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, TextInput, ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, TextInput, ScrollView, Alert } from "react-native";
 import styles from "./styles";
 
-import Alert from "../../errors/alert";
+import ErroAlert from "../../errors/alert";
 
 import api from "../../api";
 
@@ -24,23 +24,6 @@ export default function Cadastro({ navigation }) {
 
     function cadastrar() {
         setErro("");
-
-        // Teste
-        // const data = {
-        //     nome: "joao",
-        //     sobrenome: "victor",
-        //     email: "pijack123@gmail.com",
-        //     senha: "123456789",
-        //     confirmarSenha: "123456789",
-        //     cpf: "12345678910",
-        //     telefone: "99999999",
-        //     rua: "RUA",
-        //     numero: "NUMERO",
-        //     bairro: "BAIRRO",
-        //     cidade: "CIDADE"
-        // }
-
-        // Original
         const data = {
             nome,
             sobrenome,
@@ -59,6 +42,10 @@ export default function Cadastro({ navigation }) {
         .then((response) => {
             limpaInputs();
             navigation.navigate("Login");
+            setTimeout(() => {
+                Alert.alert("Cadastro", "Cadastro realizado com sucesso!", [
+                    { text: "OK" }])
+                }, 100);
         })
         .catch((error) => {
             setErro(error.response.data.message);
@@ -83,7 +70,7 @@ export default function Cadastro({ navigation }) {
     return (
         <View>
             <ScrollView contentInsetAdjustmentBehavior="automatic">
-                <Alert erro={erro}/>
+                <ErroAlert erro={erro}/>
                 <View style={styles.background}>
                     <View style={styles.backgroundCadastro}>
                         <View style={styles.campoNomes}>

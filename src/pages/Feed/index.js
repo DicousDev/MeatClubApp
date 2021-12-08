@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { View, StyleSheet, ScrollView, Text, TouchableOpacity } from "react-native";
+import { View, StyleSheet, ScrollView, Text, TouchableOpacity, Alert, ActivityIndicator } from "react-native";
 import { ProdutoContext } from "../../Context/ProdutosContext";
 import { AuthContext } from "../../Context/AuthContext";
 import { TotalContext } from "../../Context/TotalProdutosContext";
@@ -49,10 +49,18 @@ export default function Feed() {
         carregaProdutos();
     }, []);
 
+    function alertAdicionarProduto() {
+        Alert.alert("Plano adicionado", "Plano adicionado no carrinho com sucesso!", [
+            { text: "OK" }
+        ])
+    }
+
     function adicionarProduto(idPlano, nome, preco, periodo, conteudo) {
         const produtoExiste = produtos.findIndex(e => Number(e.IDPLANO) == Number(idPlano))
 
+        // Valida se o plano existe em produtos.
         if(produtoExiste >= 0) {
+            alertAdicionarProduto();
             const data = {
                 nome: nome,
                 preco: preco,
@@ -94,36 +102,50 @@ export default function Feed() {
     }
 
     return(
-        <View style={{marginBottom: 20}}>
-            <ScrollView contentInsetAdjustmentBehavior="automatic">
-                <View style={styles.planos}>
-                    {produtos.map(e => {
-                        return(
-                            <View style={styles.backgroundPlano}>
-                                <View style={{flex: 1,}}>
-                                    <Text style={{fontSize: 20}}>{e.NOME}</Text>
-                                        <View style={styles.conteudoPlano}>
-                                            {
-                                                e.PRODUTOS.map(w => {
-                                                    return (
-                                                        <Text style={{fontSize: 10}}>{w.DESCRICAO}</Text>
-                                                    );
-                                                })
-                                            }
-                                        </View>
-                                </View>
-                                <View style={{alignItems: "center", justifyContent: 'flex-end', flex: 1}}>
-                                    <Text style={{paddingBottom: 5}}>R$ {e.PRECO} {e.PERIODO}</Text>
-                                        <TouchableOpacity style={{backgroundColor: "#9F3E3E", paddingHorizontal: 40, paddingVertical: 5, borderRadius: 10}}
-                                        onPress={() => {adicionarProduto(e.IDPLANO)}}>
-                                            <Text style={{color: 'white'}}>ADICIONAR</Text>
-                                        </TouchableOpacity>
-                                </View>
+        <View>
+            {
+                (produtos.length) <= 0 ?
+                    <View style={{width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center'}}>
+                        <ActivityIndicator size="large" color="#9F3E3E"/>
+                    </View>
+                :
+                    // Tela dos planos disponíveis.
+                    <View style={{marginBottom: 20}}>
+                        <ScrollView contentInsetAdjustmentBehavior="automatic">
+                            <View style={styles.planos}>
+                                {
+                                    // Carrega todos os planos disponíveis para o cliente.
+                                    produtos.map(e => {
+                                        return(
+                                            <View style={styles.backgroundPlano}>
+                                                <View style={{flex: 1,}}>
+                                                    <Text style={{fontSize: 20}}>{e.NOME}</Text>
+                                                        <View style={styles.conteudoPlano}>
+                                                            {
+                                                                // Exibe os produtos de um plano.
+                                                                e.PRODUTOS.map(w => {
+                                                                    return (
+                                                                        <Text style={{fontSize: 10}}>{w.DESCRICAO}</Text>
+                                                                    );
+                                                                })
+                                                            }
+                                                        </View>
+                                                </View>
+                                                <View style={{alignItems: "center", justifyContent: 'flex-end', flex: 1}}>
+                                                    <Text style={{paddingBottom: 5, color: '#9F3E3E'}}>R$ {e.PRECO} {e.PERIODO}</Text>
+                                                        <TouchableOpacity style={{backgroundColor: "#9F3E3E", paddingHorizontal: 40, paddingVertical: 5, borderRadius: 10}}
+                                                        onPress={() => {adicionarProduto(e.IDPLANO)}}>
+                                                            <Text style={{color: 'white'}}>ADICIONAR</Text>
+                                                        </TouchableOpacity>
+                                                </View>
+                                            </View>
+                                        );
+                                    })
+                                }
                             </View>
-                        );
-                    })}
+                    </ScrollView>
                 </View>
-            </ScrollView>
+            }
         </View>
     );
 }

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, TextInput } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, TextInput, Alert } from "react-native";
 
 import { AuthContext } from "../../Context/AuthContext";
 import { EnderecoContext } from "../../Context/EnderecoContext";
@@ -48,6 +48,7 @@ export default function AlterarEndereco({ navigation }) {
 
         const data = {};
 
+        // Caso alguns campos foram preenchidos, os valores são colocados dentro de um objeto.
         if(rua) {
             data.rua = rua;
         }
@@ -64,6 +65,7 @@ export default function AlterarEndereco({ navigation }) {
             data.numero = numero;
         }
 
+        // Altera o endereço do usuário.
         api.patch("/user/endereco", data, {
             headers: {
                 "Authorization": auth
@@ -71,11 +73,15 @@ export default function AlterarEndereco({ navigation }) {
         })
         .then((response) => {
             navigation.navigate("Conta");
-            enderecoContext.setRua = rua;
-            enderecoContext.setBairro = bairro;
-            enderecoContext.setCidade = cidade;
-            enderecoContext.setNumero = numero; 
-            setTimeout(() => {alert("Endereço atualizado com sucesso!")}, 100);
+            setTimeout(() => {
+                Alert.alert("Conta Atualizada", "Conta atualizada com sucesso!", [
+                    { text: "OK" }])
+                }, 100);
+
+            enderecoContext.setRua = data.rua;
+            enderecoContext.setBairro = data.bairro;
+            enderecoContext.setCidade = data.cidade;
+            enderecoContext.setNumero = data.numero; 
         })
         .catch((error) => {
             console.log(error);
